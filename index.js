@@ -106,9 +106,7 @@ async function scrapeProduct2 (url,datos,pasos){
             
             //await page.screenshot({ path: 'screenshot6.png' });
             
-            //page.waitForNavigation(20000);
-            
-            
+            //page.waitForNavigation(20000);        
             
             //console.log({no_data});
             
@@ -185,16 +183,16 @@ app.get('/', function(req, res) {
   mensaje: 'Punto de inicio'
  };
  res.send(respuesta);
-});
-app.post('/scrape', async (req, res) =>{
-    
-   // const {rs} = req.params
+})
+
+app.post('/', async (req, res) =>{
+
+  res.send('entro a post');
     
     console.log(req.body);
-
+    
     if (req.body.razonSocial) {
-
-        
+      
       //  rsocial.razonSocial=rs; //'GTIM SOFTWARE PROJECTS S DE RL DE CV',
        // rsocial.url=rs;
       // res.send(rs);
@@ -206,33 +204,7 @@ app.post('/scrape', async (req, res) =>{
     }
 
 
-});
-
- /*
- .post(function (req, res) {
-  if(!req.body.rs || !req.body.url) {
-   respuesta = {
-    error: true,
-    codigo: 502,
-    mensaje: ' RS y URL son campos requeridos'
-   };
-  } else {
-
-     rs = {
-     razonSocial: req.body.rasonSocial,
-     url: req.body.url
-    };
-    respuesta = {
-     error: false,
-     codigo: 200,
-     mensaje: 'rs creado',
-     respuesta: rs
-    };
-   }
-   res.send(respuesta);
-  }
-);
-*/
+})
 
 
 app.use(bodyParser.json())
@@ -241,6 +213,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
+
 app.listen(3000, () => {
  console.log("El servidor está inicializado en el puerto 3000");
 });
