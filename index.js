@@ -187,7 +187,7 @@ app.get('/', function(req, res) {
 
 app.post('/', async (req, res) =>{
 
-  res.send('entro a post');
+ // res.send('entro a post');
     
     console.log(req.body);
     
