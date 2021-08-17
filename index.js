@@ -84,7 +84,6 @@ async function scrapeProduct2 (url,datos,pasos){
         await consulta.click();
         
         //await page.screenshot({ path: 'screenshot3.png' });
-      //  page.waitForNavigation(20000);
         await page.waitForSelector('#res-accion > div > div > div:nth-child(2) > div > form');
 
         await page.$eval('#res-accion > div > div > div:nth-child(2) > div > form', form => form.submit());
@@ -92,33 +91,20 @@ async function scrapeProduct2 (url,datos,pasos){
         console.log(page.url());	
 
         //await page.screenshot({ path: 'screenshot4.png' });
-    
-        /*
-        const [rsoc] = await page.$x('//*[@id="rsoc"]');
-        
-        console.log({rsoc});
-        
-        await page.screenshot({ path: 'screenshot5.png' });
-        */
+
         await page.waitForSelector('#rsoc');
         await page.type('#rsoc', datos);
         
         //await page.screenshot({ path: 'screenshot5.png' });
         
         const [buscar] = await page.$x('//*[@id="bnt_busqueda"]');
-        
-        //console.log({buscar});
+
         if(buscar)
         {
             
             await buscar.click();
             
-            //await page.screenshot({ path: 'screenshot6.png' });
-            
-            //page.waitForNavigation(20000);        
-            
-            //console.log({no_data});
-            
+         
           
             try
             {   
@@ -126,7 +112,7 @@ async function scrapeProduct2 (url,datos,pasos){
                 const [ERROR] = await page.$x('//*[@id="tablaem"]/tbody/h2');
 
                 //await page.screenshot({ path: 'screenshot7.png' });	
-                return ({ERROR});
+                return ('NO HAY DATOS');
 
             }catch(err)
             {
@@ -135,14 +121,11 @@ async function scrapeProduct2 (url,datos,pasos){
 
                 await page.$eval('#tablaem > tbody > tr > td:nth-child(3) > form', form => form.submit());
                 
-                //page.waitForNavigation(10000);
-                
                 //await page.screenshot({ path: 'screenshot8.png' });
                 await page.waitForSelector('body > div.content > div:nth-child(3) > div:nth-child(1) > div > div:nth-child(1) > div > p.highlightname');
 
                 const[razon] = await page.$x('/html/body/div[3]/div[2]/div[1]/div/div[1]/div/p[2]');
                 const getMsgRazon = await page.evaluate(name => name.textContent, razon);
-                //const [txt] = await razon.getProperty('textContent');
                 
                 const[municipio] = await page.$x('/html/body/div[3]/div[2]/div[1]/div/div[2]/div/p[2]');
                 const getMsgMunicipio = await page.evaluate(name => name.textContent, municipio);
@@ -152,19 +135,13 @@ async function scrapeProduct2 (url,datos,pasos){
 
                 const[folio] = await page.$x('/html/body/div[3]/div[1]/div[1]/div/h3[1]');
                 const getMsgFolio = await page.evaluate(name => name.textContent, folio);
-
-                //const[servicios] = await page.$x('/html/body/div[3]/div[2]/div[2]/div[1]/ul');
-                 
+               
                 const getMsgServices = await page.evaluate(() =>
                 Array.from(
                   document.querySelectorAll('body > div.content > div:nth-child(3) > div:nth-child(2) > div ul'),
                   (element) => element.textContent
                 )
               )
-              //console.log(services)
-
-                //const getMsgServicios = await page.evaluate(name => name.textContent, services);
-
         
                 console.log({ getMsgFolio, getMsgRazon, getMsgMunicipio, getMsgRegistro, getMsgServices });
                 
@@ -185,52 +162,33 @@ async function scrapeProduct2 (url,datos,pasos){
 }
 
 
-app.get('/', function(req, res) {
- /*respuesta = {
-  error: true,
-  codigo: 200,
-  mensaje: 'Punto de inicio'
- };
- 
- res.send(respuesta);
+app.get('/', async (req, res) =>{
 
- */
+ console.log(req.headers);
 
- console.log(req.url);
- console.log(req.razonSocial);
     
- if (req.razonSocial) {
-     const result = await scrapeProduct2(req.url, req.razonSocial, null) ;
+ if (req.headers.razonsocial) {
+     const result = await scrapeProduct2(req.headers.url, req.headers.razonsocial, null) ;
      res.send(result);
-     //(res.json(rsocial)
  } else {
-  res.send(req.url);
-    res.send(req.razonSocial);
-     res.send('Fallo GET');
+  return res.send('Fallo GET');
  }
-})
+});
 
 app.post('/', async (req, res) =>{
 
- // res.send('entro a post');
-    
     console.log(req.body);
     
     if (req.body.razonSocial) {
-      
-      //  rsocial.razonSocial=rs; //'GTIM SOFTWARE PROJECTS S DE RL DE CV',
-       // rsocial.url=rs;
-      // res.send(rs);
         const result = await scrapeProduct2(req.body.url, req.body.razonSocial, null) ;
         res.send(result);
-        //(res.json(rsocial)
     } else {
-      res.send('Fallo POST',req.url, req.razonSocial);
+      return res.send('Fallo POST',req.url, req.razonSocial);
 
     }
 
 
-})
+});
 
 
 app.use(bodyParser.json())
