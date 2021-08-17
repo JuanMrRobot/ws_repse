@@ -186,12 +186,28 @@ async function scrapeProduct2 (url,datos,pasos){
 
 
 app.get('/', function(req, res) {
- respuesta = {
+ /*respuesta = {
   error: true,
   codigo: 200,
   mensaje: 'Punto de inicio'
  };
+ 
  res.send(respuesta);
+
+ */
+
+ console.log(req.url);
+ console.log(req.razonSocial);
+    
+ if (req.razonSocial) {
+     const result = await scrapeProduct2(req.url, req.razonSocial, null) ;
+     res.send(result);
+     //(res.json(rsocial)
+ } else {
+  res.send(req.url);
+    res.send(req.razonSocial);
+     res.send('Fallo GET');
+ }
 })
 
 app.post('/', async (req, res) =>{
@@ -209,7 +225,8 @@ app.post('/', async (req, res) =>{
         res.send(result);
         //(res.json(rsocial)
     } else {
-        res.send('Fallo');
+      res.send('Fallo POST',req.url, req.razonSocial);
+
     }
 
 
