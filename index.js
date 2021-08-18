@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
+const router = express.Router();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 const puppeteer = require('puppeteer');
+const { Router } = require("express");
 
 
 let rsocial = {
@@ -161,14 +163,17 @@ async function scrapeProduct2 (url,datos,pasos){
     
 }
 
+app.get ('/', async (req, res) =>{
 
-app.get('/', async (req, res) =>{
+  app.param(['url', 'razonSocial'], function (req, res, next, value) {
+    console.log('CALLED ONLY ONCE with', value)
+    next()
+  })
 
- console.log(req.headers);
-
-    
- if (req.headers.razonsocial) {
-     const result = await scrapeProduct2(req.headers.url, req.headers.razonsocial, null) ;
+ console.log(req.body);
+ 
+ if (req.body.razonSocial) {
+     const result = await scrapeProduct2(req.body.url, req.body.razonSocial, null) ;
      res.send(result);
  } else {
   return res.send('Fallo GET');
