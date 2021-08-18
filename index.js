@@ -39,7 +39,7 @@ function valida_repse(url, datos, pasos) {
 }
 */
 
-async function scrapeProduct2 (url,datos,pasos){
+async function scrapeProduct2 (datos,pasos){
    
   /*  var respuesta;
     if(datos=='GTIM SOFTWARE PROJECTS S DE RL DE CV')
@@ -165,15 +165,17 @@ async function scrapeProduct2 (url,datos,pasos){
 
 app.get ('/', async (req, res) =>{
 
+  /*
   app.param(['url', 'razonSocial'], function (req, res, next, value) {
     console.log('CALLED ONLY ONCE with', value)
     next()
   })
+  */
 
  console.log(req.body);
  
  if (req.body.razonSocial) {
-     const result = await scrapeProduct2(req.body.url, req.body.razonSocial, null) ;
+     const result = await scrapeProduct2(req.body.razonSocial, null) ;
      res.send(result);
  } else {
   return res.send('Fallo GET');
@@ -185,7 +187,7 @@ app.post('/', async (req, res) =>{
     console.log(req.body);
     
     if (req.body.razonSocial) {
-        const result = await scrapeProduct2(req.body.url, req.body.razonSocial, null) ;
+        const result = await scrapeProduct2(req.body.razonSocial, null) ;
         res.send(result);
     } else {
       return res.send('Fallo POST',req.url, req.razonSocial);
