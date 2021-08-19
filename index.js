@@ -180,9 +180,9 @@ app.get ('/', async (req, res ) =>{
         method: 'POST',
         body: JSON.stringify({
              //id:7839
-              EMPNO: 8888             
-            , ENAME: "Israelillo"
-           ,  JOB: "Coordinador"
+              EMPNO: 8889             
+            , ENAME: "Juan"
+           ,  JOB: "Dev Jr"
         }),
         headers: {
             "Content-type": "application/json"
