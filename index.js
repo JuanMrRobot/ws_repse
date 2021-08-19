@@ -3,10 +3,13 @@ const bodyParser = require('body-parser');
 const app = express();
 const router = express.Router();
 
+const fetch = require("node-fetch");
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const puppeteer = require('puppeteer');
 const { Router } = require("express");
+const { text } = require("body-parser");
 
 
 let rsocial = {
@@ -171,27 +174,27 @@ app.get ('/', async (req, res ) =>{
      const result = await scrapeProduct2(req.body.razonSocial, null) ;
     // res.send(result);
     
-
   try{
-    //https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/:id
+         //https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/:id
     fetch('https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/', {
-            method: 'POST',
-            body: JSON.stringify({
-                 id:   8888,
-                name: "ISRAELILLO"
-               // surname: "Swift"
-            }),
-            headers: {
-                "Content-type": "application/json"
-            }
-           }
-           )
-      .then(response => response.json())
-      .then(json => console.log(json))
+        method: 'POST',
+        body: JSON.stringify({
+             //id:7839
+              EMPNO: 8888             
+            , ENAME: "Israelillo"
+           ,  JOB: "Coordinador"
+        }),
+        headers: {
+            "Content-type": "application/json"
+        }
+      })
+      .then(response => response.text())
+      .then(text => console.log(text))
           }catch(err){
             return res.send('Fallo el Fetch');
           }
-
+     
+    res.send(result);
 
  } else {
   return res.send('Fallo GET');
