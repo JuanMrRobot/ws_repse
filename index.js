@@ -150,6 +150,7 @@ async function scrapeProduct2 (datos,pasos){
                 await browser.close();
 
                 return ({ getMsgFolio, getMsgRazon, getMsgMunicipio, getMsgRegistro, getMsgServices });
+                
                     
             } 
             
@@ -163,20 +164,35 @@ async function scrapeProduct2 (datos,pasos){
     
 }
 
-app.get ('/', async (req, res) =>{
-
-  /*
-  app.param(['url', 'razonSocial'], function (req, res, next, value) {
-    console.log('CALLED ONLY ONCE with', value)
-    next()
-  })
-  */
-
+app.get ('/', async (req, res ) =>{
  console.log(req.body);
  
  if (req.body.razonSocial) {
      const result = await scrapeProduct2(req.body.razonSocial, null) ;
-     res.send(result);
+    // res.send(result);
+    
+
+  try{
+    //https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/:id
+    fetch('https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/', {
+            method: 'POST',
+            body: JSON.stringify({
+                 id:   8888,
+                name: "ISRAELILLO"
+               // surname: "Swift"
+            }),
+            headers: {
+                "Content-type": "application/json"
+            }
+           }
+           )
+      .then(response => response.json())
+      .then(json => console.log(json))
+          }catch(err){
+            return res.send('Fallo el Fetch');
+          }
+
+
  } else {
   return res.send('Fallo GET');
  }
