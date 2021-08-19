@@ -172,28 +172,27 @@ app.get ('/', async (req, res ) =>{
  
  if (req.body.razonSocial) {
      const result = await scrapeProduct2(req.body.razonSocial, null) ;
-    // res.send(result);
-    
+
   try{
          //https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/:id
-    fetch('https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/', {
-        method: 'POST',
+    fetch('https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/8890', {
+        method: 'PUT',
         body: JSON.stringify({
              //id:7839
-              EMPNO: 8889             
-            , ENAME: "Juan"
-           ,  JOB: "Dev Jr"
+            //  "EMPNO": 8890             
+             "ENAME": "JOHN"
+           ,  "JOB": "DEV"
         }),
         headers: {
             "Content-type": "application/json"
         }
-      })
+       })
       .then(response => response.text())
       .then(text => console.log(text))
           }catch(err){
             return res.send('Fallo el Fetch');
           }
-     
+
     res.send(result);
 
  } else {
