@@ -13,7 +13,7 @@ try{
         body: JSON.stringify({
              //id:7839
             //  "EMPNO": 8890             
-             "ENAME": "JOHN"
+             "ENAME": "JLC"
            ,  "JOB": "DEV"
         }),
         headers: {
