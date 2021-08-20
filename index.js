@@ -2,11 +2,13 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 const router = express.Router();
-
 const fetch = require("node-fetch");
+
+const res_ws = require('./rest_ws_apex');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 const puppeteer = require('puppeteer');
 const { Router } = require("express");
 const { text } = require("body-parser");
@@ -43,15 +45,7 @@ function valida_repse(url, datos, pasos) {
 */
 
 async function scrapeProduct2 (datos,pasos){
-   
-  /*  var respuesta;
-    if(datos=='GTIM SOFTWARE PROJECTS S DE RL DE CV')
-        respuesta =  {'FOLIO': '12278','RAZON_SOCIAL':'GTIM SOFTWARE PROJECTS S DE RL DE CV', 'ENTIDAD':'Nuevo León / San Pedro Garza García', 'REGISTRO':'AR12003 / 2021-08-03'};
-    else
-        respuesta = {'ERROR':'NO HAY DATOS'};
-     return respuesta;
-*/
-
+  
     const browser = await puppeteer.launch(
       { headless: true,
         args:[
@@ -171,28 +165,12 @@ app.get ('/', async (req, res ) =>{
  console.log(req.body);
  
  if (req.body.razonSocial) {
+
+//Scraper REPSE
      const result = await scrapeProduct2(req.body.razonSocial, null) ;
-
-  try{
-         //https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/:id
-    fetch('https://babilonia.maxapex.net/apex/alere_ams_desa/hr/employees/8890', {
-        method: 'PUT',
-        body: JSON.stringify({
-             //id:7839
-            //  "EMPNO": 8890             
-             "ENAME": "JOHN"
-           ,  "JOB": "DEV"
-        }),
-        headers: {
-            "Content-type": "application/json"
-        }
-       })
-      .then(response => response.text())
-      .then(text => console.log(text))
-          }catch(err){
-            return res.send('Fallo el Fetch');
-          }
-
+//APEX RESTful     
+     const rest = await res_ws.rest_apex(null) ;
+  
     res.send(result);
 
  } else {
